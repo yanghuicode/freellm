@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeLLM - 免费大模型 API 资源合集</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #8b949e;
+            font-size: 1.1em;
+        }
+        /* Lock Screen */
+        .lock-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .lock-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .lock-screen h2 {
+            color: #f0f6fc;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .lock-screen p {
+            color: #8b949e;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .star-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 32px;
+            background: #238636;
+            color: #fff;
+            border: 1px solid #2ea043;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .star-btn:hover { background: #2ea043; }
+        .star-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .check-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 32px;
+            background: #1f6feb;
+            color: #fff;
+            border: 1px solid #388bfd;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+        .check-btn:hover { background: #388bfd; }
+        .check-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .login-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #21262d;
+        }
+        .login-section p {
+            color: #8b949e;
+            margin-bottom: 15px;
+        }
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .login-btn:hover { background: #30363d; }
+        .error-msg {
+            color: #f85149;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        /* Content Screen */
+        .content-screen { display: none; }
+        .content-screen h2 {
+            color: #58a6ff;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .resource-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+        .resource-card:hover { border-color: #58a6ff; }
+        .resource-card h3 {
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+        .resource-card p {
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .resource-card .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #1f6feb22;
+            color: #58a6ff;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+        .resource-card a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        .resource-card a:hover { text-decoration: underline; }
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #484f58;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            border: 3px solid #21262d;
+            border-top: 3px solid #58a6ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: #23863633;
+            color: #3fb950;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FreeLLM</h1>
+            <p>免费大模型 API 资源合集</p>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在验证 Star 状态...</p>
+        </div>
+
+        <!-- Lock Screen -->
+        <div class="lock-screen" id="lockScreen">
+            <div class="lock-icon">🔒</div>
+            <h2>内容已锁定</h2>
+            <p>请先 Star 本仓库以解锁全部内容<br>这是对作者最好的支持 ⭐</p>
+
+            <a id="starLink" class="star-btn" href="#" target="_blank">
+                <svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
+                Star 仓库
+            </a>
+
+            <br>
+            <button class="check-btn" id="checkBtn" onclick="checkStar()">
+                ✓ 我已 Star，验证
+            </button>
+
+            <div class="login-section" id="loginSection">
+                <p>需要登录 GitHub 才能验证 Star 状态</p>
+                <a class="login-btn" id="loginBtn" href="#">
+                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    登录 GitHub
+                </a>
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <!-- Content Screen (hidden by default) -->
+        <div class="content-screen" id="contentScreen">
+            <div class="success-badge">✅ Star 验证通过</div>
+            <h2>🎉 欢迎！以下是 FreeLLM 资源</h2>
+
+            <div class="resource-card">
+                <h3>🟢 ChatGPT Free</h3>
+                <p>OpenAI 提供的免费 ChatGPT 访问，支持 GPT-3.5 和 GPT-4o mini</p>
+                <span class="tag">免费</span>
+                <span class="tag">GPT-4o mini</span>
+                <p style="margin-top:10px"><a href="https://chat.openai.com" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 Google Gemini</h3>
+                <p>Google 的 Gemini 系列模型，免费额度充足，支持多模态</p>
+                <span class="tag">免费</span>
+                <span class="tag">多模态</span>
+                <p style="margin-top:10px"><a href="https://gemini.google.com" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 Claude (Anthropic)</h3>
+                <p>Anthropic 的 Claude 模型，免费用户可使用 Claude 3.5 Sonnet</p>
+                <span class="tag">免费</span>
+                <span class="tag">长上下文</span>
+                <p style="margin-top:10px"><a href="https://claude.ai" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 DeepSeek</h3>
+                <p>国产大模型，提供免费 API 额度，性价比极高</p>
+                <span class="tag">免费额度</span>
+                <span class="tag">中文优秀</span>
+                <p style="margin-top:10px"><a href="https://platform.deepseek.com" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 通义千问 (Qwen)</h3>
+                <p>阿里云出品，免费 API 额度大，中文能力出色</p>
+                <span class="tag">免费额度</span>
+                <span class="tag">中文优秀</span>
+                <p style="margin-top:10px"><a href="https://tongyi.aliyun.com" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 Groq</h3>
+                <p>超快推理速度，免费使用 Llama/Mixtral 等开源模型</p>
+                <span class="tag">免费</span>
+                <span class="tag">超快速度</span>
+                <p style="margin-top:10px"><a href="https://groq.com" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 HuggingFace</h3>
+                <p>开源模型社区，提供免费 Inference API，支持数千种模型</p>
+                <span class="tag">免费</span>
+                <span class="tag">开源生态</span>
+                <p style="margin-top:10px"><a href="https://huggingface.co" target="_blank">访问 →</a></p>
+            </div>
+
+            <div class="resource-card">
+                <h3>🟢 OpenRouter</h3>
+                <p>聚合多家 LLM 提供商，提供免费模型额度</p>
+                <span class="tag">免费额度</span>
+                <span class="tag">多模型</span>
+                <p style="margin-top:10px"><a href="https://openrouter.ai" target="_blank">访问 →</a></p>
+            </div>
+
+            <p style="text-align:center; color:#8b949e; margin-top:30px;">
+                📌 持续更新中... Star 仓库以便获取最新资源
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>FreeLLM © 2026 | Made with ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        // ============ 配置区域 ============
+        const CONFIG = {
+            owner: 'YOUR_GITHUB_USERNAME',  // ← 改成你的 GitHub 用户名
+            repo: 'freellm',                 // ← 仓库名
+        };
+        // ==================================
+
+        const API = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}`;
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        async function checkStar() {
+            hideError();
+            const token = localStorage.getItem('gh_token');
+
+            if (!token) {
+                document.getElementById('loginSection').style.display = 'block';
+                showError('请先登录 GitHub 或提供 Token');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('lockScreen').style.display = 'none';
+
+            try {
+                const res = await fetch(`${API}/starred/${CONFIG.owner}/${CONFIG.repo}`, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (res.status === 204) {
+                    // Starred!
+                    localStorage.setItem('star_verified', 'true');
+                    showContent();
+                } else if (res.status === 404) {
+                    // Not starred
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('lockScreen').style.display = 'block';
+                    showError('你还没有 Star 本仓库，请先点击 Star 按钮');
+                } else if (res.status === 401) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('lockScreen').style.display = 'block';
+                    localStorage.removeItem('gh_token');
+                    showError('Token 已过期，请重新登录');
+                } else {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+            } catch (e) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('lockScreen').style.display = 'block';
+                showError('验证失败: ' + e.message);
+            }
+        }
+
+        function showContent() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('contentScreen').style.display = 'block';
+        }
+
+        // GitHub OAuth - 使用 GitHub Personal Access Token 方式（更简单）
+        function setupLogin() {
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const token = prompt('请输入 GitHub Personal Access Token:\n\n生成方式: GitHub Settings → Developer settings → Personal access tokens → 勾选 "user" scope');
+                if (token) {
+                    localStorage.setItem('gh_token', token.trim());
+                    checkStar();
+                }
+            });
+        }
+
+        // 初始化
+        function init() {
+            setupLogin();
+
+            // 设置 Star 链接
+            document.getElementById('starLink').href = `https://github.com/${CONFIG.owner}/${CONFIG.repo}`;
+
+            // 检查是否已验证过
+            if (localStorage.getItem('star_verified') === 'true') {
+                checkStar(); // 重新验证，防止 unstar
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
